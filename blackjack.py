@@ -122,9 +122,9 @@ while game:
 					choice = "H"
 				sleep(1.5)
 				
-			if choice == "H":
+			if choice in ["H", "HIT"]:
 				deal_card(player, 1)
-			elif choice == "S":
+			elif choice in ["S", "STAND"]:
 				print(f"{player.name} has decided to stand.")
 				if player.score == 21:
 					player.score *= 2
