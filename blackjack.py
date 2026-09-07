@@ -47,7 +47,10 @@ def deal_card(player, amount):
 	Add a specified number of cards to the given player.
 	"""
 	for _ in range(amount):
+		if not cards:
+			return False
 		player.hand.append(cards.pop(rd.randint(0, len(cards) - 1)))
+	return True
 		
 # Clear
 def clear():
@@ -67,6 +70,12 @@ players = [Player(name) for name in player_names]
 while game:
 	new_deck()
 
+	# Reset round state; dead players cannot carry stale state into later rounds.
+	for p in players:
+		p.score = 0
+		p.busted = p.health <= 0
+		p.clear_hand()
+
 	print("Players: " + " ".join([f"[{p.name} : {p.health}HP]" for p in players]))
 	print()
 
@@ -78,7 +87,8 @@ while game:
 		play = True
 		player.clear_hand()
 		player.busted = False
-		deal_card(player, 2)
+		if not deal_card(player, 2):
+			break
 		print(f"{player.name}'s turn: [{player.health}HP]")
 	
 		# Player Round
@@ -111,19 +121,21 @@ while game:
 			if player is players[0]:
 				while True:
 					choice = input("> Hit or Stand? ").upper()
-					if choice.upper() in ["H", "S", "HIT", "STAND"]:
+					if choice in ["H", "S", "HIT", "STAND"]:
 						break
 						
 			# Bot Choice
 			else:
-				if player.score >= player.target or all(p.busted for p in players if p is not player): # Stands if everyone busted
+				if player.score >= player.target or all(p.busted for p in players if p is not player and p.health > 0): # Stands if everyone else active has busted
 					choice = "S"
 				else:
 					choice = "H"
 				sleep(1.5)
 				
 			if choice in ["H", "HIT"]:
-				deal_card(player, 1)
+				if not deal_card(player, 1):
+					print("The deck is empty. Ending the round.")
+					break
 			elif choice in ["S", "STAND"]:
 				print(f"{player.name} has decided to stand.")
 				if player.score == 21:
@@ -132,13 +144,14 @@ while game:
 				sleep(1)
 				break
 	
-	# All lose = draw
-	busts = [player.busted for player in players]
-	if sum(busts) == len(players):
+	# All lose = draw, considering active players only
+	active_players = [p for p in players if p.health > 0]
+	busts = [player.busted for player in active_players]
+	if not active_players or sum(busts) == len(active_players):
 		print("No one won the round...")
 		
 	else:
-		podium = sorted(players, key = lambda player: player.score if not player.busted else 0, reverse = True)
+		podium = sorted(active_players, key = lambda player: player.score if not player.busted else 0, reverse = True)
 		winners = [p for p in podium if p.score == podium[0].score]
 		
 		if len(winners) > 1:
@@ -148,9 +161,9 @@ while game:
 			print(f"{winners[0].name} won the round!")
 		
 		# Damage to losers
-		for p in players:
+		for p in active_players:
 			for w in winners:
-				if p is w or p.health <= 0 or p in winners:
+				if p is w or p in winners:
 					continue
 				damage = w.score - p.score
 				p.health = max(p.health - damage, 0)
