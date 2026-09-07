@@ -66,6 +66,10 @@ def clear():
 player_names = ["Nyther", "X0R", "Connor", "Zeee"]
 players = [Player(name) for name in player_names]
 
+# First round starts in a random order. After that, the previous round's winner goes first.
+round_order = players.copy()
+rd.shuffle(round_order)
+
 # Game
 while game:
 	new_deck()
@@ -77,10 +81,11 @@ while game:
 		p.clear_hand()
 
 	print("Players: " + " ".join([f"[{p.name} : {p.health}HP]" for p in players]))
+	print(f"Turn order: {' -> '.join(p.name for p in round_order if p.health > 0)}")
 	print()
 
-	# Cycle players
-	for i, player in enumerate(players):
+	# Cycle players in the current round order
+	for player in round_order:
 		if player.health <= 0:
 			continue
 			
@@ -147,6 +152,7 @@ while game:
 	# All lose = draw, considering active players only
 	active_players = [p for p in players if p.health > 0]
 	busts = [player.busted for player in active_players]
+	winners = []
 	if not active_players or sum(busts) == len(active_players):
 		print("No one won the round...")
 		
@@ -178,6 +184,10 @@ while game:
 		print(f"{survivors[0].name} has won the game!")
 		game = False
 	else:
+		# A round winner gets first position next round. If the round is a draw,
+		# keep the current order rather than giving an arbitrary player priority.
+		if winners:
+			round_order = winners + [p for p in round_order if p not in winners and p.health > 0]
 		input("...")
 		clear()
 	
