@@ -1,6 +1,6 @@
 # Blackjack
 Terminal based game of Blackjack with a few twists.  
-Inspired by the game Dungeons & Degenerate Gamblers.
+Inspired by the games Dungeons & Degenerate Gamblers and Dupery.
 
 ## Quirks:
 - Game is played against "bots".
@@ -14,11 +14,11 @@ Inspired by the game Dungeons & Degenerate Gamblers.
 
 ## Bot Archetypes: **[SPOILERS]**
 
-- **Score Bot** — Tries to beat the highest visible opponent score and stands when already ahead.
-- **Counter Bot** — Uses visible scores and Hi-Lo card counting to decide when to hit or stand.
-- **Defensive Bot** — Prioritizes survival and minimizing HP loss over achieving a high score.
-- **GPT** — Uses a calculated, human-like strategy based only on the current game state, balancing score, HP, and risk. It has no knowledge of other bots' identities or strategies.
-- **Average Bot** — Uses a simple Blackjack-style strategy: hit below 17 and stand at 17 or higher.
-- **Noob** — Randomly chooses whether to hit or stand.
-- **Copycat** — Mimics another player's number of hits, then stands if it survives.
-- **Risktaker** — Always pushes for 20 or 21, regardless of the risk of busting.
+- **Score:** Tries to beat the highest visible opponent score and stands when already ahead.
+- **Counter:** Uses visible scores and Hi-Lo card counting to decide when to hit or stand.
+- **Defensive:** Prioritizes survival and minimizing HP loss over achieving a high score.
+- **GPT:** Uses a calculated, human-like strategy based only on the current game state, balancing score, HP, and risk. It has no knowledge of other bots' identities or strategies.
+- **Average:** Uses a simple Blackjack-style strategy: hit below 17 and stand at 17 or higher.
+- **Noob:** Randomly chooses whether to hit or stand.
+- **Copycat:** Mimics another player's number of hits, then stands if it survives.
+- **Risktaker:** Always pushes for 20 or 21, regardless of the risk of busting.
