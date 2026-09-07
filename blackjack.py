@@ -8,7 +8,7 @@ game = True
 play = True
 
 # Add more bot names here as the roster grows.
-BOT_NAMES = ["X0R", "Connor", "Zeee"]
+BOT_NAMES = ["X0R", "Connor", "Zeee", "Nyther", "Osama Joe Biden", "TotallyNotACheater", "Chat GPT", "YOU", "A dog", "Boe Jiden", "Yan", "M.J.", "Freddie Mercury"]
 
 # Used when the available bot-name list runs out.
 NAME_SUFFIXES = [
