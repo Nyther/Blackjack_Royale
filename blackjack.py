@@ -70,11 +70,8 @@ def deal_card(player, amount):
 
 # Clear
 def clear():
-    """Clears the console."""
-    try:
-        os.system("clear")
-    except:
-        pass
+    """Clears the console using ANSI escape sequences."""
+    print("\033[H\033[J", end="")
 
 
 # Bot AI
