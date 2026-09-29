@@ -1,5 +1,6 @@
 import random as rd
 import os
+import subprocess
 from time import sleep
 
 suits = ["♤", "♧", "♡", "◇"]
@@ -70,8 +71,8 @@ def deal_card(player, amount):
 
 # Clear
 def clear():
-    """Clears the console using ANSI escape sequences."""
-    print("\033[H\033[J", end="")
+    """Clears the console."""
+    subprocess.run("cls" if os.name == "nt" else "clear", shell=True)
 
 
 # Bot AI
