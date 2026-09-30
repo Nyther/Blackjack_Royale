@@ -25,16 +25,16 @@ NAME_SUFFIXES = [
     "'s tax collector",
 ]
 
-BOT_ROSTER = {
-    "score": "score",
-    "counter": "counter",
-    "defensive": "defensive",
-    "gpt": "gpt",
-    "average": "average",
-    "noob": "noob",
-    "copycat": "copycat",
-    "risktaker": "risktaker",
-}
+BOT_TYPES = [
+    "score",
+    "counter",
+    "defensive",
+    "gpt",
+    "average",
+    "noob",
+    "copycat",
+    "risktaker",
+]
 
 BOT_LABELS = {
     "score": "score bot",
@@ -336,10 +336,6 @@ print(TITTLE)
 # Players
 player_name = input("What's your name? ").strip() or "Nyther"
 
-# If the player chooses a name already reserved for a bot, keep the player's
-# chosen name and give the bot the familiar "the second" variant.
-player_name_lower = player_name.casefold()
-
 while True:
     try:
         opponent_count = int(input("How many opponents? (1-3) "))
@@ -352,22 +348,13 @@ while True:
 available_bot_names = BOT_NAMES.copy()
 rd.shuffle(available_bot_names)
 
-# If the player picked a reserved bot name, the player gets the "the second"
-# treatment. The bot keeps the original name: the player is the side bitch.
-if player_name_lower in {name.casefold() for name in available_bot_names}:
-    player_name = f"{player_name} the second"
-    player_name_lower = player_name.casefold()
-
 bot_names = []
-used_names = {player_name_lower}
+used_names = set()
 
 for _ in range(opponent_count):
     if available_bot_names:
         name = available_bot_names.pop()
 
-        # A bot name can still collide with a player's "the second" name.
-        if name.casefold() in used_names:
-            name = f"{name} the second"
     else:
         # If the configurable name list is exhausted, create a relation to
         # an existing name.
@@ -382,11 +369,15 @@ for _ in range(opponent_count):
     bot_names.append(name)
     used_names.add(name.casefold())
 
+# Only rename the player if a bot selected for this game has the same name.
+if player_name.casefold() in used_names:
+    player_name = f"{player_name} the second"
+
 players = [Player(player_name)] + [Player(name) for name in bot_names]
 
 # Build a game-specific roster. Each archetype is preferred only once before
 # duplicates are allowed.
-available_types = list(BOT_ROSTER.values())
+available_types = BOT_TYPES.copy()
 bot_ai = {}
 
 for p in players[1:]:
