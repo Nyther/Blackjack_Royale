@@ -25,6 +25,33 @@ NAME_SUFFIXES = [
     "'s tax collector",
 ]
 
+BOT_ROSTER = {
+    "score": "score",
+    "counter": "counter",
+    "defensive": "defensive",
+    "gpt": "gpt",
+    "average": "average",
+    "noob": "noob",
+    "copycat": "copycat",
+    "risktaker": "risktaker",
+}
+
+BOT_LABELS = {
+    "score": "score bot",
+    "counter": "counter",
+    "defensive": "defensive bot",
+    "gpt": "GPT",
+    "average": "Average bot",
+    "noob": "Noob",
+    "copycat": "Copycat",
+    "risktaker": "Risktaker",
+}
+
+TITTLE_WIDTH = 50
+TITTLE = "BLACKJACK ROYALE".center(TITTLE_WIDTH)
+TITTLE += "\n"
+TITTLE += "-" * TITTLE_WIDTH
+
 
 # Player
 class Player:
@@ -303,31 +330,8 @@ def average_bot_choice(player):
     return "S" if player.score >= 17 else "H"
 
 
-# Bot roster
-# Add new bot archetypes here later. The game draws from this roster and
-# avoids duplicates until every archetype has been used once.
-BOT_ROSTER = {
-    "score": "score",
-    "counter": "counter",
-    "defensive": "defensive",
-    "gpt": "gpt",
-    "average": "average",
-    "noob": "noob",
-    "copycat": "copycat",
-    "risktaker": "risktaker",
-}
-
-BOT_LABELS = {
-    "score": "score bot",
-    "counter": "counter",
-    "defensive": "defensive bot",
-    "gpt": "GPT",
-    "average": "Average bot",
-    "noob": "Noob",
-    "copycat": "Copycat",
-    "risktaker": "Risktaker",
-}
-
+clear()
+print(TITTLE)
 
 # Players
 player_name = input("What's your name? ").strip() or "Nyther"
@@ -400,6 +404,7 @@ rd.shuffle(round_order)
 
 # Game
 while game:
+    print(TITTLE)
     new_deck()
 
     # Reset round state; dead players cannot carry stale state into later rounds.
